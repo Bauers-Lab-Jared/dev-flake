@@ -1,0 +1,98 @@
+version: "3"
+interval: 500ms
+tasks:
+  default:
+    cmds:
+      - task: build-test
+  env-reload:
+    cmds:
+      - direnv reload
+      - nix-direnv-reload
+    aliases:
+      - env
+  run:
+    deps:
+      - build
+    cmds:
+      - bin/main
+    method: none
+  debug:
+    deps:
+      - build-debug
+    cmds:
+      - gdb debug/main --tui
+    aliases:
+      - d
+    method: none
+  debug-dap:
+    deps:
+      - build-debug
+    cmds:
+      - gdb debug/main -i dap
+    method: none
+  mkdir-bin:
+    precondition: "[ ! -e bin ]"
+    sources:
+      - "bin/"
+    cmds:
+      - mkdir bin
+    internal: true
+  build:
+    deps:
+      - mkdir-bin
+    sources:
+      - "src/**/*.odin"
+    cmds:
+      - odin build src/main -out:bin/main
+    aliases:
+      - b
+    generates:
+      - bin/main
+  mkdir-test:
+    precondition: "[ ! -e test ]"
+    sources:
+      - "test/"
+    cmds:
+      - mkdir test
+    internal: true
+  build-test:
+    deps:
+      - mkdir-test
+    sources:
+      - "src/**/*.odin"
+    cmds:
+      - odin test src/main -out:test/main
+    aliases:
+      - test
+      - t
+    generates:
+      - test/main
+  mkdir-debug:
+    precondition: "[ ! -e debug ]"
+    sources:
+      - "debug/"
+    cmds:
+      - mkdir debug
+    internal: true
+  build-debug:
+    deps:
+      - mkdir-debug
+    sources:
+      - "src/**/*.odin"
+    cmds:
+      - odin build src/main -out:debug/main -o:none -debug
+    aliases:
+      - bd
+    generates:
+      - debug/main
+  watch:
+    watch: true
+    sources:
+      - "src/**/*.odin"
+    cmds:
+      - task: test
+  watch-run:
+    sources:
+      - "src/**/*.odin"
+    cmds:
+      - task: run
