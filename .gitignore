@@ -3,5 +3,4 @@ test/
 debug/
 bin/
 .task/
-.ccls-cache
 .direnv/
