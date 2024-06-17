@@ -22,7 +22,13 @@
         packages = [
           (self.inputs.nixvim.lib.mkNixvim {
             inherit pkgs;
-            addons = ["proj-odin" "proj-nix"];
+            # Add nixmodules below
+            addons = [
+              /*
+              EX:"proj-odin"
+              */
+              "proj-nix"
+            ];
           })
         ];
       };
