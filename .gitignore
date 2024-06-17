@@ -1,5 +1,5 @@
-result
 test/
+build/
 debug/
 bin/
 .task/
