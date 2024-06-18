@@ -4,11 +4,10 @@
   clang,
   llvm_17,
   go-task,
-  qqwing,
   gdb,
 }:
 stdenv.mkDerivation (let
-  name = "odin-sudoku";
+  name = "proj-name";
   src = ./src;
 in {
   inherit name src;
@@ -19,7 +18,6 @@ in {
     odin
     clang
     llvm_17
-    qqwing
   ];
 
   buildPhase = ''

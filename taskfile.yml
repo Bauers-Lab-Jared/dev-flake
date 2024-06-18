@@ -14,7 +14,7 @@ tasks:
     deps:
       - build
     cmds:
-      - bin/main
+      - build/main
     method: none
   debug:
     deps:
@@ -30,24 +30,24 @@ tasks:
     cmds:
       - gdb debug/main -i dap
     method: none
-  mkdir-bin:
-    precondition: "[ ! -e bin ]"
+  mkdir-build:
+    precondition: "[ ! -e build ]"
     sources:
-      - "bin/"
+      - "build/"
     cmds:
-      - mkdir bin
+      - mkdir build
     internal: true
   build:
     deps:
-      - mkdir-bin
+      - mkdir-build
     sources:
       - "src/**/*.odin"
     cmds:
-      - odin build src/main -out:bin/main
+      - odin build src/main -out:build/main
     aliases:
       - b
     generates:
-      - bin/main
+      - build/main
   mkdir-test:
     precondition: "[ ! -e test ]"
     sources:
@@ -92,6 +92,7 @@ tasks:
     cmds:
       - task: test
   watch-run:
+    watch: true
     sources:
       - "src/**/*.odin"
     cmds:
