@@ -3,7 +3,7 @@ interval: 500ms
 tasks:
   default:
     cmds:
-      - task: build-test
+      - task: env-reload
   env-reload:
     cmds:
       - direnv reload
@@ -14,7 +14,7 @@ tasks:
     deps:
       - build
     cmds:
-      - build/main
+      - bin/main
     method: none
   debug:
     deps:
@@ -25,48 +25,37 @@ tasks:
       - d
     method: none
   debug-dap:
-    deps:
-      - build-debug
     cmds:
       - gdb debug/main -i dap
     method: none
-  mkdir-build:
-    precondition: "[ ! -e build ]"
+  mkdir-bin:
+    precondition: "[ ! -e bin ]"
     sources:
-      - "build/"
+      - "bin/"
     cmds:
-      - mkdir build
+      - mkdir bin
     internal: true
   build:
     deps:
-      - mkdir-build
+      - mkdir-bin
     sources:
       - "src/**/*.odin"
     cmds:
-    #example:- odin build src/main -out:build/main
+      - odin build src/main -out:bin/main
     aliases:
       - b
     generates:
-      - build/main
-  mkdir-test:
-    precondition: "[ ! -e test ]"
-    sources:
-      - "test/"
-    cmds:
-      - mkdir test
-    internal: true
+      - bin/main
   build-test:
     deps:
-      - mkdir-test
+      - mkdir-debug
     sources:
       - "src/**/*.odin"
     cmds:
-      - odin test src/main -out:test/main
+      - odin test test/ -out:debug/main -o:none -debug -all-packages
     aliases:
       - test
-      - t
-    generates:
-      - test/main
+    method: none
   mkdir-debug:
     precondition: "[ ! -e debug ]"
     sources:
