@@ -1,6 +1,4 @@
-test/
-build/
-debug/
-bin/
 .task/
 .direnv/
+/gomod2nix-template
+result

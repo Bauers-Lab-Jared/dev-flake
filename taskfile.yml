@@ -11,78 +11,63 @@ tasks:
     aliases:
       - env
   run:
-    deps:
-      - build
     cmds:
-      - bin/main
+      - go run
     method: none
-  debug:
-    deps:
-      - build-debug
-    cmds:
-      - gdb debug/main --tui
-    aliases:
-      - d
-    method: none
-  debug-dap:
-    cmds:
-      - gdb debug/main -i dap
-    method: none
-  mkdir-bin:
-    precondition: "[ ! -e bin ]"
-    sources:
-      - "bin/"
-    cmds:
-      - mkdir bin
-    internal: true
+    #  debug:
+    #    deps:
+    #      - build-debug
+    #    cmds:
+    #      - gdb debug/main --tui
+    #    aliases:
+    #      - d
+    #    method: none
+    #  debug-dap:
+    #    cmds:
+    #      - gdb debug/main -i dap
+    #    method: none
   build:
-    deps:
-      - mkdir-bin
     sources:
-      - "src/**/*.odin"
+      - "*.go"
     cmds:
-      - odin build src/main -out:bin/main
+      - nix build
     aliases:
       - b
     generates:
-      - bin/main
+      - result/
   build-test:
-    deps:
-      - mkdir-debug
-    sources:
-      - "src/**/*.odin"
     cmds:
-      - odin test test/ -out:debug/main -o:none -debug -all-packages
+      - go test
     aliases:
       - test
     method: none
-  mkdir-debug:
-    precondition: "[ ! -e debug ]"
-    sources:
-      - "debug/"
-    cmds:
-      - mkdir debug
-    internal: true
-  build-debug:
-    deps:
-      - mkdir-debug
-    sources:
-      - "src/**/*.odin"
-    cmds:
-      - odin build src/main -out:debug/main -o:none -debug
-    aliases:
-      - bd
-    generates:
-      - debug/main
+    #  mkdir-debug:
+    #    precondition: "[ ! -e debug ]"
+    #    sources:
+    #      - "debug/"
+    #    cmds:
+    #      - mkdir debug
+    #    internal: true
+    #  build-debug:
+    #    deps:
+    #      - mkdir-debug
+    #    sources:
+    #      - "src/**/*.odin"
+    #    cmds:
+    #      - odin build src/main -out:debug/main -o:none -debug
+    #    aliases:
+    #      - bd
+    #    generates:
+    #      - debug/main
   watch:
     watch: true
     sources:
-      - "src/**/*.odin"
+      - "*.go"
     cmds:
       - task: test
   watch-run:
     watch: true
     sources:
-      - "src/**/*.odin"
+      - "*.go"
     cmds:
       - task: run
