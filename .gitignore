@@ -1,6 +1,6 @@
-test/
-build/
+result
 debug/
 bin/
 .task/
+.ccls-cache
 .direnv/

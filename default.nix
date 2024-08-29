@@ -7,11 +7,10 @@
   gdb,
   # Args for this func will be sourced by nixpkgs automatically
 }:
-stdenv.mkDerivation (let
-  name = "proj-name";
+stdenv.mkDerivation rec {
+  pname = "projectName";
+  version = "0.1";
   src = ./src;
-in {
-  inherit name src;
 
   # Inputs to be available at build time
   nativeBuildInputs = [
@@ -22,15 +21,17 @@ in {
     llvm_17
   ];
 
-  buildPhase = ''
   # Inputs to be available at runtime
   buildInputs = [
   ];
-    odin build ${src}/main -out:${name}
+
+  buildPhase = ''
+    odin build ./main/ \
+    -out:${pname}
   '';
 
   installPhase = ''
     mkdir -p $out/bin
-    cp ${name} $out/bin
+    cp ${pname} $out/bin
   '';
-})
+}
