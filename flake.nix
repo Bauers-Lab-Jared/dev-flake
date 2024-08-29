@@ -46,6 +46,7 @@
               /*
               EX:"proj-odin"
               */
+              "proj-go"
               "proj-nix"
             ];
           })
