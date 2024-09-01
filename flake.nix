@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     nixvim.url = "github:bauers-lab-jared/nixvim";
   };
@@ -13,6 +13,7 @@
   }: let
     out = system: let
       pkgs = nixpkgs.legacyPackages.${system};
+      nixvimPkgs = self.inputs.nixvim.inputs.nixpkgs.legacyPackages.${system};
       appliedOverlay = self.overlays.default pkgs pkgs;
     in {
       packages.default = appliedOverlay.default;
@@ -21,7 +22,7 @@
 
         packages = [
           (self.inputs.nixvim.lib.mkNixvim {
-            inherit pkgs;
+            pkgs = nixvimPkgs;
             addons = ["proj-odin" "proj-nix"];
           })
         ];
