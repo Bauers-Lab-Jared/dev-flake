@@ -19,11 +19,18 @@
       packages.default = appliedOverlay.default;
       devShells.default = pkgs.mkShell {
         inherit (appliedOverlay.default) nativeBuildInputs buildInputs;
+        LD_LIBRARY_PATH = "$LD_LIBRARY_PATH:${
+          pkgs.lib.makeLibraryPath appliedOverlay.default.buildInputs
+        }";
 
         packages = [
           (self.inputs.nixvim.lib.mkNixvim {
             pkgs = nixvimPkgs;
-            addons = ["proj-odin" "proj-nix"];
+            addons = [
+              #"proj-html" use this for web projects
+              "proj-odin"
+              "proj-nix"
+            ];
           })
         ];
       };

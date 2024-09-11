@@ -281,11 +281,11 @@
         "snowfall-lib": "snowfall-lib"
       },
       "locked": {
-        "lastModified": 1724824707,
-        "narHash": "sha256-ro8F3wM+fKzXZLNsbHcHd+Qs8Y90NlKX0NZeaEDAplI=",
+        "lastModified": 1725144276,
+        "narHash": "sha256-gUf17uv/PwN4zd8HFfXLxhzVigIrDdHd90UPANCaXko=",
         "owner": "bauers-lab-jared",
         "repo": "nixvim",
-        "rev": "37708172a331ee8b7c4e8b4afef13551dbac5d1c",
+        "rev": "418bf089707e0ba5ae51df7aff5293ae8cefdbd0",
         "type": "github"
       },
       "original": {
