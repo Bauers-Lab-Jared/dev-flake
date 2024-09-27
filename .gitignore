@@ -4,3 +4,4 @@ debug/
 bin/
 .task/
 .direnv/
+result
