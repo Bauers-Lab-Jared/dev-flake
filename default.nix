@@ -1,13 +1,6 @@
 {
   stdenv,
   go-task,
-  # Args for this func will be sourced by nixpkgs automatically
-  #Examples:
-  # odin,
-  # clang,
-  # llvm_17,
-  # qqwing,
-  # gdb,
 }:
 stdenv.mkDerivation (let
   name = "proj-name";
@@ -18,12 +11,6 @@ in {
   # Inputs to be available at build time
   nativeBuildInputs = [
     go-task
-    #Examples
-    # gdb
-    # odin
-    # clang
-    # llvm_17
-    # qqwing
   ];
 
   # Inputs to be available at runtime
