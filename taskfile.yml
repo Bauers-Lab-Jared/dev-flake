@@ -35,8 +35,8 @@ tasks:
       - b
   build-test:
     cmds:
+      - odin test src/main/ -out:debug/main -o:none -all-packages
       - nix run .
-      # - odin test src/main/ -out:debug/main -o:none -all-packages
     aliases:
       - test
     method: none
