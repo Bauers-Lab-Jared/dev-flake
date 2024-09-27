@@ -1,6 +1,7 @@
 {
   stdenv,
   go-task,
+  rocpkgs,
 }:
 stdenv.mkDerivation (let
   name = "proj-name";
@@ -11,6 +12,7 @@ in {
   # Inputs to be available at build time
   nativeBuildInputs = [
     go-task
+    rocpkgs.cli
   ];
 
   # Inputs to be available at runtime

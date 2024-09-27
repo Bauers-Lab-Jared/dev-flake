@@ -1,22 +1,26 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     nixvim.url = "github:bauers-lab-jared/nixvim";
-    roclang.url = "github:roc-lang/roc";
+    roc.url = "github:roc-lang/roc";
   };
 
   outputs = {
     self,
-    nixpkgs,
+    roc,
     flake-utils,
     ...
   }: let
     out = system: let
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs =
+        import roc.inputs.nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        }
+        // {rocpkgs = roc.packages.${system};};
       nixvimPkgs = self.inputs.nixvim.inputs.nixpkgs.legacyPackages.${system};
       appliedOverlay = self.overlays.default pkgs pkgs;
-      rocShell = out.roclang.devShell.${system};
+      rocShell = roc.devShell.${system};
     in {
       packages.default = appliedOverlay.default;
       devShells.default = pkgs.mkShell {
@@ -46,7 +50,7 @@
     flake-utils.lib.eachDefaultSystem out
     // {
       overlays.default = final: prev: {
-        default = final.callPackage ./default.nix {};
+        default = final.callPackage ./default.nix {inherit (prev) rocpkgs;};
       };
     };
 }

@@ -16,18 +16,18 @@ tasks:
     cmds:
       - bin/main
     method: none
-  debug:
-    deps:
-      - build-debug
-    cmds:
-      - gdb debug/main --tui
-    aliases:
-      - d
-    method: none
-  debug-dap:
-    cmds:
-      - gdb debug/main -i dap
-    method: none
+    #  debug:
+    #    deps:
+    #      - build-debug
+    #    cmds:
+    #      - gdb debug/main --tui
+    #    aliases:
+    #      - d
+    #    method: none
+    #  debug-dap:
+    #    cmds:
+    #      - gdb debug/main -i dap
+    #    method: none
   mkdir-bin:
     precondition: "[ ! -e bin ]"
     sources:
@@ -39,20 +39,18 @@ tasks:
     deps:
       - mkdir-bin
     sources:
-      - "src/**/*.odin"
+      - "src/**/*.roc"
     cmds:
-      - odin build src/main -out:bin/main
+      - roc build src/main.roc --output bin/main
     aliases:
       - b
     generates:
       - bin/main
   build-test:
-    deps:
-      - mkdir-debug
     sources:
-      - "src/**/*.odin"
+      - "src/**/*.roc"
     cmds:
-      - odin test test/ -out:debug/main -o:none -debug -all-packages
+      - roc dev src/main.roc --profiling
     aliases:
       - test
     method: none
@@ -67,9 +65,9 @@ tasks:
     deps:
       - mkdir-debug
     sources:
-      - "src/**/*.odin"
+      - "src/**/*.roc"
     cmds:
-      - odin build src/main -out:debug/main -o:none -debug
+      - roc build src/main.roc --output bin/main --dev --profiling
     aliases:
       - bd
     generates:
@@ -77,12 +75,12 @@ tasks:
   watch:
     watch: true
     sources:
-      - "src/**/*.odin"
+      - "src/**/*.roc"
     cmds:
       - task: test
   watch-run:
     watch: true
     sources:
-      - "src/**/*.odin"
+      - "src/**/*.roc"
     cmds:
       - task: run
