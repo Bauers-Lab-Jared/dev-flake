@@ -39,6 +39,9 @@ stdenv.mkDerivation rec {
       mkdir -p $out/bin
       odin build $src -out:$out/bin/$pname
 
+      mkdir -p $out/Resources
+      cp -r $src/Resources/ $out
+
       ${patchelf}/bin/patchelf \
         --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
         --set-rpath "${libPath}" \
