@@ -2,12 +2,15 @@
   stdenv,
   go-task,
   rocpkgs,
+  lib,
+  writeShellScript,
+  patchelf,
+  coreutils,
 }:
-stdenv.mkDerivation (let
-  name = "proj-name";
+stdenv.mkDerivation rec {
+  pname = "proj-name";
+  version = "0.1";
   src = ./src;
-in {
-  inherit name src;
 
   # Inputs to be available at build time
   nativeBuildInputs = [
@@ -19,16 +22,20 @@ in {
   buildInputs = [
   ];
 
-  buildPhase = "";
-  /*
-                           Example:
-  ''
-    odin build ${src}/main -out:${name}
-  ''
-  */
+  builder = let
+    libPath = lib.makeLibraryPath buildInputs;
+  in
+    writeShellScript "builder.sh" ''
+      export PATH="${coreutils}/bin:${rocpkgs.cli}/bin"
+      mkdir -p $out/bin
+      roc build "$src/main.roc" --output "$out/bin/$pname" --prebuilt-platform
 
-  installPhase = ''
-    mkdir -p $out/bin
-    cp ${name} $out/bin
-  '';
-})
+      mkdir -p $out/Resources
+      cp -r $src/Resources/ $out
+
+      ${patchelf}/bin/patchelf \
+        --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
+        --set-rpath "${libPath}" \
+        $out/bin/${pname}
+    '';
+}

@@ -11,10 +11,8 @@ tasks:
     aliases:
       - env
   run:
-    deps:
-      - build
     cmds:
-      - bin/main
+      - roc dev src/main.roc --profiling
     method: none
     #  debug:
     #    deps:
@@ -50,7 +48,7 @@ tasks:
     sources:
       - "src/**/*.roc"
     cmds:
-      - roc dev src/main.roc --profiling
+      - roc test src/main.roc --profiling
     aliases:
       - test
     method: none
