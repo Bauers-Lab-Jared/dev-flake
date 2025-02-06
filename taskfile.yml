@@ -15,7 +15,6 @@ tasks:
       - build
     cmds:
       - nix run .
-    method: none
   debug:
     deps:
       - build-debug
@@ -23,11 +22,9 @@ tasks:
       - gdb debug/main --tui
     aliases:
       - d
-    method: none
   debug-dap:
     cmds:
       - gdb debug/main -i dap
-    method: none
   build:
     cmds:
       - nix build .
@@ -39,12 +36,11 @@ tasks:
       - nix run .
     aliases:
       - test
-    method: none
   mkdir-debug:
-    precondition: "[ ! -e debug ]"
     sources:
       - "debug/"
     cmds:
+      - rm -r debug
       - mkdir debug
     internal: true
   build-debug:
