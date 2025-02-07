@@ -4,6 +4,7 @@
   go-task,
   gdb,
   coreutils,
+  autoPatchelfHook,
   #libGL, --use these for raylib
   #xorg,
   lib,
@@ -21,6 +22,7 @@ stdenv.mkDerivation rec {
   # the automatic functionality of mkDerivation.
   nativeBuildInputs =
     [
+      autoPatchelfHook
       gdb
       go-task
       odin
@@ -38,21 +40,32 @@ stdenv.mkDerivation rec {
     #xorg.libX11
   ];
 
-  builder = let
-    libPath = lib.makeLibraryPath buildInputs;
-  in
-    writeShellScript "builder.sh" ''
-      export PATH="${coreutils}/bin:${odin}/bin"
-      mkdir -p $out/bin
-      odin build $src -out:$out/bin/$pname \
-      ${odin-libs.mkBuildArgs odinLibNames}
+  buildPhase = ''
+    runHook preBuild
 
-      mkdir -p $out/Resources
-      cp -r $src/Resources/ $out
+    export PATH="''${PATH}:${coreutils}/bin:${odin}/bin"
+    mkdir -p $out/bin
+    odin build $src -out:$out/bin/$pname \
+    ${odin-libs.mkBuildArgs odinLibNames}
 
-      ${patchelf}/bin/patchelf \
-        --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
-        --set-rpath "${libPath}" \
-        $out/bin/${pname}
-    '';
+    runHook postBuild
+  '';
+
+  installPhase = ''
+    runHook preInstall
+
+    mkdir -p $out/Resources
+    cp -r $src/resources/ $out
+
+    runHook postInstall
+  '';
+
+  #  preFixup = let
+  #    libPath = lib.makeLibraryPath buildInputs;
+  #  in ''
+  #    ${patchelf}/bin/patchelf \
+  #      --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
+  #      --set-rpath "${libPath}" \
+  #      $out/bin/${pname}
+  #  '';
 }

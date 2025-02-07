@@ -363,11 +363,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1738948436,
-        "narHash": "sha256-yGfa1Sdg43TZM33SWZpwdJztrRe1m55T6r0byPWgENA=",
+        "lastModified": 1738956472,
+        "narHash": "sha256-6HC6ja6/irplYMHj3lipLHo6or9LmEZGGYm04GDN+JE=",
         "owner": "bauers-lab-jared",
         "repo": "odin-libs",
-        "rev": "db2cdb21eb72e1300fc4518ead609f2f254e0b8a",
+        "rev": "37bdba520bff250c1fe9b2f97971b5d595f6ddc2",
         "type": "github"
       },
       "original": {
