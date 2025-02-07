@@ -1,0 +1,71 @@
+From 2608cd26d557aacd01df2e494b6a0e995e6efb19 Mon Sep 17 00:00:00 2001
+From: Bintang Adiputra Pratama <bintangadiputra@proton.me>
+Date: Tue, 24 Dec 2024 13:01:53 +0700
+Subject: [PATCH] vendor:raylib: add options to link with raylib/raygui from
+ system
+
+---
+ vendor/raylib/raygui.odin    | 5 ++++-
+ vendor/raylib/raylib.odin    | 5 ++++-
+ vendor/raylib/rlgl/rlgl.odin | 5 ++++-
+ 3 files changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/vendor/raylib/raygui.odin b/vendor/raylib/raygui.odin
+index a15467a..a590566 100644
+--- a/vendor/raylib/raygui.odin
++++ b/vendor/raylib/raygui.odin
+@@ -3,8 +3,11 @@ package raylib
+ import "core:c"
+ 
+ RAYGUI_SHARED :: #config(RAYGUI_SHARED, false)
++RAYGUI_SYSTEM :: #config(RAYGUI_SYSTEM, false)
+ 
+-when ODIN_OS == .Windows {
++when RAYGUI_SYSTEM {
++	foreign import lib "system:raygui"
++} else when ODIN_OS == .Windows {
+ 	foreign import lib {
+ 		"windows/rayguidll.lib" when RAYGUI_SHARED else "windows/raygui.lib",
+ 	}
+diff --git a/vendor/raylib/raylib.odin b/vendor/raylib/raylib.odin
+index 34a803b..0cb4526 100644
+--- a/vendor/raylib/raylib.odin
++++ b/vendor/raylib/raylib.odin
+@@ -100,8 +100,11 @@ MAX_TEXT_BUFFER_LENGTH :: #config(RAYLIB_MAX_TEXT_BUFFER_LENGTH, 1024)
+ #assert(size_of(rune) == size_of(c.int))
+ 
+ RAYLIB_SHARED :: #config(RAYLIB_SHARED, false)
++RAYLIB_SYSTEM :: #config(RAYLIB_SYSTEM, false)
+ 
+-when ODIN_OS == .Windows {
++when RAYLIB_SYSTEM {
++	foreign import lib "system:raylib"
++} else when ODIN_OS == .Windows {
+ 	@(extra_linker_flags="/NODEFAULTLIB:" + ("msvcrt" when RAYLIB_SHARED else "libcmt"))
+ 	foreign import lib {
+ 		"windows/raylibdll.lib" when RAYLIB_SHARED else "windows/raylib.lib" ,
+diff --git a/vendor/raylib/rlgl/rlgl.odin b/vendor/raylib/rlgl/rlgl.odin
+index 40913cd..e9f070e 100644
+--- a/vendor/raylib/rlgl/rlgl.odin
++++ b/vendor/raylib/rlgl/rlgl.odin
+@@ -113,13 +113,16 @@ import rl "../."
+ VERSION :: "5.0"
+ 
+ RAYLIB_SHARED :: #config(RAYLIB_SHARED, false)
++RAYLIB_SYSTEM :: #config(RAYLIB_SYSTEM, false)
+ 
+ // Note: We pull in the full raylib library. If you want a truly stand-alone rlgl, then:
+ // - Compile a separate rlgl library and use that in the foreign import blocks below.
+ // - Remove the `import rl "../."` line
+ // - Copy the code from raylib.odin for any types we alias from that package (see PixelFormat etc)
+ 
+-when ODIN_OS == .Windows {
++when RAYLIB_SYSTEM {
++	foreign import lib "system:raylib"
++} else when ODIN_OS == .Windows {
+ 	@(extra_linker_flags="/NODEFAULTLIB:" + ("msvcrt" when RAYLIB_SHARED else "libcmt"))
+ 	foreign import lib {
+ 		"../windows/raylibdll.lib" when RAYLIB_SHARED else "../windows/raylib.lib" ,
+-- 
+2.47.0
+
