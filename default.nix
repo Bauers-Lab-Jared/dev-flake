@@ -9,6 +9,7 @@
   lib,
   writeShellScript,
   patchelf,
+  odin-libs,
 }:
 stdenv.mkDerivation rec {
   pname = "projectName";
@@ -18,10 +19,16 @@ stdenv.mkDerivation rec {
   # Now mostly for loading the dev environment.
   # Our custom builder is overriding most of
   # the automatic functionality of mkDerivation.
-  nativeBuildInputs = [
-    gdb
-    go-task
-    odin
+  nativeBuildInputs =
+    [
+      gdb
+      go-task
+      odin
+    ]
+    ++ (odin-libs.getLibsByName odinLibNames);
+
+  odinLibNames = [
+    "waffle"
   ];
   src = ./src/main;
 
@@ -37,7 +44,8 @@ stdenv.mkDerivation rec {
     writeShellScript "builder.sh" ''
       export PATH="${coreutils}/bin:${odin}/bin"
       mkdir -p $out/bin
-      odin build $src -out:$out/bin/$pname
+      odin build $src -out:$out/bin/$pname \
+      ${odin-libs.mkBuildArgs odinLibNames}
 
       mkdir -p $out/Resources
       cp -r $src/Resources/ $out
