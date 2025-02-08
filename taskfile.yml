@@ -10,9 +10,14 @@ tasks:
       - nix-direnv-reload
     aliases:
       - env
-  run:
+  git-gud:
     cmds:
-      - nix run .
+      - git add --all
+  run:
+    deps:
+      - git-gud
+    cmds:
+      - nix run . --show-trace
   debug:
     deps:
       - build-debug
@@ -24,12 +29,15 @@ tasks:
     cmds:
       - gdb debug/main -i dap
   build:
+    deps:
+      - git-gud
     cmds:
-      - nix build .
+      - nix build . --show-trace
     aliases:
       - b
   build-test:
     deps:
+      - git-gud
       - mkdir-debug
     cmds:
       - eval "$TEST_CMD"
