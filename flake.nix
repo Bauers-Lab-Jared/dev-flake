@@ -14,15 +14,53 @@
   }: let
     odin-libs = let
       inherit (self.inputs.odin-libs) libs;
-    in
-      libs
-      // {
-        getLibsByName = libNames: map (libName: libs.${libName}) libNames;
-        mkBuildArgs = libNames:
-          builtins.concatStringsSep " \\\n" (
-            map (libName: "-collection:${libName}='${libs.${libName}}'") libNames
-          );
+      inherit (nixpkgs.lib) optionals;
+      extra = rec {
+        names = import ./odinLibs.nix;
+        pkgs = map (libName: libs.${libName}) names;
+        buildArgs = builtins.concatStringsSep " \\\n" (
+          map (libName: "-collection:${libName}='${libs.${libName}}'") names
+        );
+        odinCMD = type: let
+          args =
+            [
+              "-use-separate-modules"
+              "-define:RAYLIB_SYSTEM=true"
+              "${buildArgs}"
+            ]
+            ++ (
+              optionals (type == "build") [
+                "-out:$out/bin/$pname"
+                "-warnings-as-errors"
+                "-build-mode:exe"
+              ]
+            )
+            ++ (
+              optionals (type == "test") [
+                "-out:debug/main"
+                "-o:none"
+                "-all-packages"
+              ]
+            )
+            ++ (
+              optionals (type == "debug") [
+                "-out:debug/main"
+                "-build-mode:exe"
+                "-o:none"
+                "-debug"
+              ]
+            );
+        in ''
+          odin ${
+            if type == "test"
+            then "test"
+            else "build"
+          } $src \
+          ${builtins.concatStringsSep " \\\n" args}
+        '';
       };
+    in
+      libs // extra;
     out = system: let
       pkgs = import nixpkgs {
         inherit system;
@@ -54,6 +92,9 @@
         LD_LIBRARY_PATH = "$LD_LIBRARY_PATH:${
           pkgs.lib.makeLibraryPath appliedOverlay.default.buildInputs
         }";
+
+        TEST_CMD = odin-libs.odinCMD "test";
+        DEBUG_CMD = odin-libs.odinCMD "debug";
 
         packages = [
           (self.inputs.nixvim.lib.mkNixvim {

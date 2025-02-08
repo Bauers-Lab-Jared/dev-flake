@@ -8,9 +8,10 @@
   raylib,
   odin-libs,
 }:
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   pname = "projectName";
   version = "0.1";
+  src = ./src/main;
 
   # Inputs to be available at build time
   # Now mostly for loading the dev environment.
@@ -22,12 +23,7 @@ stdenv.mkDerivation rec {
       go-task
       odin
     ]
-    ++ (odin-libs.getLibsByName odinLibNames);
-
-  odinLibNames = [
-    "waffle"
-  ];
-  src = ./src/main;
+    ++ odin-libs.pkgs;
 
   # Inputs to be available at runtime
   buildInputs = [
@@ -40,15 +36,7 @@ stdenv.mkDerivation rec {
     runHook preBuild
 
     mkdir -p $out/bin
-
-    odin build $src -out:$out/bin/$pname \
-    ${odin-libs.mkBuildArgs odinLibNames} \
-    -build-mode:exe \
-    -vet \
-    -disallow-do \
-    -warnings-as-errors \
-    -use-separate-modules \
-    -define:RAYLIB_SYSTEM=true
+    ${odin-libs.odinCMD "build"}
 
     runHook postBuild
   '';
