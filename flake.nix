@@ -24,7 +24,7 @@
       packages = {
         inherit (appliedOverlay) default;
       };
-      odinConfig = nix-odin.packages.${system}.odinConfig (import ./config.nix);
+      odinConfig = appliedOverlay.default.cfg;
       devShells.default = pkgs.mkShell {
         inherit (appliedOverlay.default) nativeBuildInputs buildInputs;
         LD_LIBRARY_PATH = "$LD_LIBRARY_PATH:${
