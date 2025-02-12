@@ -498,11 +498,11 @@
         "nixvim": "nixvim"
       },
       "locked": {
-        "lastModified": 1739392064,
-        "narHash": "sha256-XfAp4VjB3DeX7txPFMTBc33KGOoXTyKTG25ysBIY8ns=",
+        "lastModified": 1739392709,
+        "narHash": "sha256-T3GW1bpkM78M/UZhP5x8+zpqHdTzHN/aH8OzbrdvdVQ=",
         "owner": "bauers-lab-jared",
         "repo": "nix-odin",
-        "rev": "7c083ede42e35ed8f11bf1bc55f83cbada97c7f0",
+        "rev": "6b31b16e57a6a88e5f3040ee76aac04507bcffc3",
         "type": "github"
       },
       "original": {
