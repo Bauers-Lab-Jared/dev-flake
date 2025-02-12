@@ -38,13 +38,18 @@ tasks:
   build-test:
     deps:
       - git-gud
-      - mkdir-debug
+      - mkdir-test
     cmds:
       - eval cmd="$(nix eval ".#odinConfig.${system}.cli.test.cmd")" && eval "$cmd"
     aliases:
       - test
     env:
       src: ./src/main/
+  mkdir-test:
+    cmds:
+      - rm -r test || true
+      - mkdir test
+    internal: true
   mkdir-debug:
     cmds:
       - rm -r debug || true
