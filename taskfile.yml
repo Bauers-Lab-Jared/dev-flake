@@ -40,7 +40,7 @@ tasks:
       - git-gud
       - mkdir-debug
     cmds:
-      - eval "$TEST_CMD"
+      - eval $(nix eval ".#odinConfig.${system}.cli.test.cmd")
     aliases:
       - test
     env:
