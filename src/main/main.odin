@@ -1,7 +1,7 @@
 package project
 
 import "core:fmt"
-//import waffle "waffle:lib"
+import "lib:waffle"
 import rl "vendor:raylib"
 
 main :: proc() {
