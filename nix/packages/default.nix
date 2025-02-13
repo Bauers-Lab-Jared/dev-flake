@@ -2,7 +2,7 @@
   stdenv,
   go-task,
   apio,
-  icestudio,
+  icestorm,
 }:
 stdenv.mkDerivation {
   pname = "proj-name";
@@ -13,7 +13,7 @@ stdenv.mkDerivation {
   nativeBuildInputs = [
     go-task
     apio
-    icestudio
+    icestorm
   ];
 
   # Inputs to be available at runtime
