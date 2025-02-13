@@ -1,42 +1,20 @@
 {
   stdenv,
   go-task,
-  # clang,
-  # llvm_17,
-  # qqwing,
-  # gdb,
+  yosys,
 }:
-stdenv.mkDerivation (let
-  name = "proj-name";
-  src = ./src;
-in {
-  inherit name src;
+stdenv.mkDerivation {
+  pname = "proj-name";
+  version = "0.1";
+  src = ../../src/main;
 
   # Inputs to be available at build time
   nativeBuildInputs = [
     go-task
-    #Examples
-    # gdb
-    # odin
-    # clang
-    # llvm_17
-    # qqwing
+    yosys
   ];
 
   # Inputs to be available at runtime
   buildInputs = [
   ];
-
-  buildPhase = "";
-  /*
-                           Example:
-  ''
-    odin build ${src}/main -out:${name}
-  ''
-  */
-
-  installPhase = ''
-    mkdir -p $out/bin
-    cp ${name} $out/bin
-  '';
-})
+}
