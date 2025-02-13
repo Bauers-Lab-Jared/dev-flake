@@ -11,12 +11,15 @@
     flake-utils,
     ...
   }: let
+    inherit (nixpkgs) lib;
     out = system: let
       pkgs = nixpkgs.legacyPackages.${system};
       nixvimPkgs = self.inputs.nixvim.inputs.nixpkgs.legacyPackages.${system};
       appliedOverlay = self.overlays.default pkgs pkgs;
     in {
-      packages.default = appliedOverlay.default;
+      packages = {
+        inherit (appliedOverlay) default foboot-bootloader;
+      };
       devShells.default = pkgs.mkShell {
         inherit (appliedOverlay.default) nativeBuildInputs buildInputs;
 
@@ -38,8 +41,11 @@
   in
     flake-utils.lib.eachDefaultSystem out
     // {
-      overlays.default = final: prev: {
-        default = final.callPackage ./default.nix {};
-      };
+      overlays.default = final: prev: (
+        lib.packagesFromDirectoryRecursive {
+          inherit (final) callPackage;
+          directory = ./nix/packages;
+        }
+      );
     };
 }
