@@ -18,25 +18,28 @@
       appliedOverlay = self.overlays.default pkgs pkgs;
     in {
       packages = {
-        inherit (appliedOverlay) default foboot-bootloader;
+        inherit (appliedOverlay) default;
       };
-      devShells.default = pkgs.mkShell {
-        inherit (appliedOverlay.default) nativeBuildInputs buildInputs;
-
-        packages = [
-          pkgs.dfu-util
-          (self.inputs.nixvim.lib.mkNixvim {
-            pkgs = nixvimPkgs;
-            # Add nixmodules below
-            addons = [
-              /*
-              EX:"proj-odin"
-              */
-              "proj-nix"
-            ];
-          })
-        ];
-      };
+      devShells.default = let
+        inherit (appliedOverlay) update-bootloader;
+      in
+        pkgs.mkShell {
+          inherit (appliedOverlay.default) nativeBuildInputs buildInputs;
+          packages = [
+            update-bootloader
+            pkgs.dfu-util
+            (self.inputs.nixvim.lib.mkNixvim {
+              pkgs = nixvimPkgs;
+              # Add nixmodules below
+              addons = [
+                /*
+                EX:"proj-odin"
+                */
+                "proj-nix"
+              ];
+            })
+          ];
+        };
     };
   in
     flake-utils.lib.eachDefaultSystem out
