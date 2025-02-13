@@ -1,9 +1,6 @@
 {
   stdenv,
   go-task,
-  # Args for this func will be sourced by nixpkgs automatically
-  #Examples:
-  # odin,
   # clang,
   # llvm_17,
   # qqwing,
