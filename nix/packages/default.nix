@@ -4,8 +4,20 @@
   apio,
   icestorm,
   yosys,
+  yosys-ghdl,
   nextpnr,
   graphviz-nox,
+  iverilog,
+  ghdl,
+  gtkwave,
+  verilator,
+  mcy,
+  aiger,
+  avy,
+  boolector,
+  yices,
+  z3,
+  bitwuzla,
 }:
 stdenv.mkDerivation {
   pname = "proj-name";
@@ -18,8 +30,20 @@ stdenv.mkDerivation {
     apio
     icestorm
     yosys
+    yosys-ghdl
     nextpnr
     graphviz-nox
+    iverilog
+    ghdl
+    gtkwave
+    verilator
+    mcy
+    aiger
+    avy
+    boolector
+    yices
+    z3
+    bitwuzla
   ];
 
   # Inputs to be available at runtime
