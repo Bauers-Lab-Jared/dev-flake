@@ -21,6 +21,7 @@
         inherit (appliedOverlay.default) nativeBuildInputs buildInputs;
 
         packages = [
+          pkgs.dfu-util
           (self.inputs.nixvim.lib.mkNixvim {
             pkgs = nixvimPkgs;
             # Add nixmodules below
