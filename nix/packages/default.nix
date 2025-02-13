@@ -3,6 +3,9 @@
   go-task,
   apio,
   icestorm,
+  yosys,
+  nextpnr,
+  graphviz-nox,
 }:
 stdenv.mkDerivation {
   pname = "proj-name";
@@ -14,6 +17,9 @@ stdenv.mkDerivation {
     go-task
     apio
     icestorm
+    yosys
+    nextpnr
+    graphviz-nox
   ];
 
   # Inputs to be available at runtime
