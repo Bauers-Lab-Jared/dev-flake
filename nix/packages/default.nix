@@ -1,7 +1,8 @@
 {
   stdenv,
   go-task,
-  yosys,
+  apio,
+  icestudio,
 }:
 stdenv.mkDerivation {
   pname = "proj-name";
@@ -11,7 +12,8 @@ stdenv.mkDerivation {
   # Inputs to be available at build time
   nativeBuildInputs = [
     go-task
-    yosys
+    apio
+    icestudio
   ];
 
   # Inputs to be available at runtime

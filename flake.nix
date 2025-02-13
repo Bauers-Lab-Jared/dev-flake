@@ -18,7 +18,7 @@
       appliedOverlay = self.overlays.default pkgs pkgs;
     in {
       packages = {
-        inherit (appliedOverlay) default fomu-workshop;
+        inherit (appliedOverlay) default;
       };
       devShells.default = let
         inherit (appliedOverlay) update-bootloader;
