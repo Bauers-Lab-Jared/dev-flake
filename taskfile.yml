@@ -12,4 +12,4 @@ tasks:
       - env
   check-device:
     cmds:
-      - sudo dfu-util -l
+      - dfu-util -l
