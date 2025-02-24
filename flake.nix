@@ -16,7 +16,7 @@
     out = system: let
       pkgs = import nixpkgs {
         inherit system;
-        overlays = [nix-odin.overlays.default];
+        overlays = nix-odin.overlays.list;
       };
       nixvimPkgs = self.inputs.nixvim.inputs.nixpkgs.legacyPackages.${system};
       appliedOverlay = self.overlays.default pkgs pkgs;
@@ -30,9 +30,6 @@
         LD_LIBRARY_PATH = "$LD_LIBRARY_PATH:${
           pkgs.lib.makeLibraryPath appliedOverlay.default.buildInputs
         }";
-
-        #        TEST_CMD = odinConfig.cli.test.cmd;
-        #        DEBUG_CMD = odinConfig.cli.debug.cmd;
 
         packages = [
           (self.inputs.nixvim.lib.mkNixvim {
@@ -50,7 +47,10 @@
     flake-utils.lib.eachDefaultSystem out
     // {
       overlays.default = final: prev: {
-        default = final.callPackage (final.buildOdin (import ./config.nix)) {};
+        default = final.callPackage (nix-odin.buildOdin {
+          pkgs = final;
+          projConfig = import ./config.nix;
+        }) {};
       };
     };
 }
