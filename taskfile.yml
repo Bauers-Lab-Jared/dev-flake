@@ -13,11 +13,14 @@ tasks:
   git-gud:
     cmds:
       - git add --all
+    silent: true
   run:
-    deps:
-      - git-gud
     cmds:
+      - task: build-glsl
+      - task: git-gud
       - nix run . --show-trace
+    aliases:
+      - test
   debug:
     deps:
       - build-debug
@@ -28,21 +31,31 @@ tasks:
   debug-dap:
     cmds:
       - gdb debug/main -i dap
-  build:
-    deps:
-      - git-gud
+  build-glsl:
+    sources:
+      - ./src/main/**.glsl
     cmds:
+      - for: sources
+        cmd: |
+          sokol-shdc -i {{.ITEM}} \
+          -o {{replace ".glsl" ".odin" .ITEM}} \
+          -l "$(nix eval --raw ".#odinConfig.${system}.extraEnvVars.SLANG")" \
+          -f "sokol_odin"
+    method: none
+  build:
+    cmds:
+      - task: build-glsl
+      - task: git-gud
       - nix build . --show-trace
     aliases:
       - b
   build-test:
     deps:
-      - git-gud
       - mkdir-test
     cmds:
+      - task: build-glsl
+      - task: git-gud
       - eval cmd="$(nix eval ".#odinConfig.${system}.cli.test.cmd")" && eval "$cmd"
-    aliases:
-      - test
     env:
       src: ./src/main/
   mkdir-test:
@@ -59,6 +72,8 @@ tasks:
     deps:
       - mkdir-debug
     cmds:
+      - task: build-glsl
+      - task: git-gud
       - eval cmd="$(nix eval ".#odinConfig.${system}.cli.debug.cmd")" && eval "$cmd"
     aliases:
       - bd
@@ -67,11 +82,11 @@ tasks:
   watch:
     watch: true
     sources:
-      - "src/**/*.odin"
+      - "src/main/**/*.odin"
     cmds:
       - task: test
   watch-run:
     sources:
-      - "src/**/*.odin"
+      - "src/main/**/*.odin"
     cmds:
       - task: run
