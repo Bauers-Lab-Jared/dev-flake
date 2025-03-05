@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<circuit>
+  <version>2</version>
+  <attributes/>
+  <visualElements>
+    <visualElement>
+      <elementName>Clock</elementName>
+      <elementAttributes/>
+      <pos x="20" y="-120"/>
+    </visualElement>
+    <visualElement>
+      <elementName>PLL.dig</elementName>
+      <elementAttributes/>
+      <pos x="40" y="-120"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>NetName</string>
+          <string>C</string>
+        </entry>
+      </elementAttributes>
+      <pos x="200" y="-120"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Not</elementName>
+      <elementAttributes/>
+      <pos x="200" y="-100"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Tunnel</elementName>
+      <elementAttributes>
+        <entry>
+          <string>NetName</string>
+          <string>R</string>
+        </entry>
+      </elementAttributes>
+      <pos x="260" y="-100"/>
+    </visualElement>
+  </visualElements>
+  <wires>
+    <wire>
+      <p1 x="180" y="-100"/>
+      <p2 x="200" y="-100"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="-100"/>
+      <p2 x="260" y="-100"/>
+    </wire>
+    <wire>
+      <p1 x="20" y="-120"/>
+      <p2 x="40" y="-120"/>
+    </wire>
+    <wire>
+      <p1 x="180" y="-120"/>
+      <p2 x="200" y="-120"/>
+    </wire>
+  </wires>
+  <measurementOrdering/>
+</circuit>
