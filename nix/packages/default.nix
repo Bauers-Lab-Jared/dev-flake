@@ -1,5 +1,7 @@
 {
   stdenv,
+  digital,
+  temurin-jre-bin,
   go-task,
   apio,
   icestorm,
@@ -27,6 +29,8 @@ stdenv.mkDerivation {
   # Inputs to be available at build time
   nativeBuildInputs = [
     go-task
+    temurin-jre-bin
+    digital
     apio
     icestorm
     yosys
@@ -45,6 +49,8 @@ stdenv.mkDerivation {
     z3
     bitwuzla
   ];
+
+  _JAVA_AWT_WM_NONREPARENTING = "1";
 
   # Inputs to be available at runtime
   buildInputs = [
