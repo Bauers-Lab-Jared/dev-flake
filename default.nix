@@ -1,6 +1,7 @@
 {
   stdenv,
   go-task,
+  nickel,
   # Args for this func will be sourced by nixpkgs automatically
   #Examples:
   # odin,
@@ -18,6 +19,7 @@ in {
   # Inputs to be available at build time
   nativeBuildInputs = [
     go-task
+    nickel
     #Examples
     # gdb
     # odin
